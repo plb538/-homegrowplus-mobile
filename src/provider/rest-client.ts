@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Grower } from "../model/grower/grower";
+import { Schedule } from '../model/components/schedule';
 
 /**
  * Handles all the REST communication to the controller (RaspPi) via available public methods
@@ -13,9 +14,8 @@ export class RestClient {
     private grower: Grower;
     private restClient: Http;
     private restTarget: string;
-    private headers = new Headers({'Content-Type': 'application/json'})
-	private options = new RequestOptions({ headers: this.headers});
-
+    private headers = new Headers({ 'Content-Type': 'application/json' })
+    private options = new RequestOptions({ headers: this.headers });
 
     /**
      *
@@ -32,7 +32,7 @@ export class RestClient {
     /*
     * Testing API call to RPi
     */
-    public turnOnLED(){
+    public turnOnLED() {
         console.log("LED on")
         return this.restClient.get('http://' + this.restTarget + ':5000' + '/on', this.options).subscribe();
     }
@@ -40,7 +40,7 @@ export class RestClient {
     /*
     * Testing API call to RPi
     */
-    public turnOffLED(){
+    public turnOffLED() {
         console.log("LED off")
         return this.restClient.get('http://' + this.restTarget + ':5000' + '/off', this.options).subscribe();
     }
@@ -52,76 +52,68 @@ export class RestClient {
         this.updateFluids();
         this.updateLights();
         this.updatePumps();
+        this.updateSchedules();
     }
 
     /**
      * Fetch the list of reservoirs and then iterate over them to fetch and update the level in each
      */
     public updateFluids() {
-        let fluids = this.grower.reservoirs.getReservoirNames();
-        fluids.forEach(
-            (fluid) => {
-                this.updateSingleFluid(fluid);
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/fluids", this.options).subscribe(
+            (data) => {
+                data.json()["fluids"].forEach(
+                    (fluid: JSON) => {
+                        this.grower.reservoirs.updateFluidLevel(fluid["name"], fluid["level"]);
+                    }
+                )
             }
-        )
+        );
     }
 
     /**
-     * Fetch the number of lights and tehn iterate over them to fetch and update each light's status (on = true|false)
+     * Fetch the number of lights and then iterate over them to fetch and update each light's status (on = true|false)
      */
     public updateLights() {
-        let lights: number = this.grower.lights.getNumLights();
-        for (let i = 0; i < lights; i++) {
-            this.updateSingleLight(i);
-        }
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/lights").subscribe(
+            (data) => {
+                data.json()["lights"].forEach(
+                    (light: JSON) => {
+                        this.grower.lights.updateLightStatus(light["number"], light["status"]);
+                    }
+                );
+            }
+        );
     }
 
     /**
      * Fetch the list of reservoirs and then iterate over them to fetch and update the status of the pump for each (on = true|false)
      */
     public updatePumps() {
-        let pumps = this.grower.reservoirs.getReservoirNames();
-        pumps.forEach(
-            (pump) => {
-                this.updateSinglePump(pump);
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/pumps").subscribe(
+            (data) => {
+                data.json()["pumps"].forEach(
+                    (pump: JSON) => {
+                        this.grower.reservoirs.setPumpStatus(pump["name"], pump["status"]);
+                    }
+                );
             }
-        )
+        );
     }
 
-    /**
-     * Update the specified fluid's level
-     * @param fluid a particular fluid
+        /**
+     * Gets a particular days schedule from the controller and sets it in the model
      */
-    private updateSingleFluid(fluid: string) {
-        this.restClient.get(this.restTarget + "/sensor/fluid/" + fluid).subscribe(
+    public updateSchedules() {
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/management/schedule").subscribe(
             (data) => {
-                this.grower.reservoirs.updateFluidLevel(fluid, data.json["level"]);
+                data.json()["days"].forEach(
+                    (day: JSON) => {
+                        let newSchedule: Schedule = new Schedule(day["name"], day["waterOnTime"], day["lightOnTime"], day["waterCyclePeriod"], day["lightCyclePeriod"]);
+                        this.grower.schedules.setDaySchedule(day["name"], newSchedule);
+                    }
+                );
             }
-        )
-    }
-
-    /**
-     * Update the specified light's status (on = true|false)
-     * @param light a particular light
-     */
-    private updateSingleLight(light: number) {
-        this.restClient.get(this.restTarget + "/sensor/light/" + light).subscribe(
-            (data) => {
-                this.grower.lights.updateLightStatus(light, data.json["on"] == true);
-            }
-        )
-    }
-
-    /**
-     * Update the specified reservoir's pump status (on = true|false)
-     * @param reservoir a particular reservoir
-     */
-    private updateSinglePump(reservoir: string) {
-        this.restClient.get(this.restTarget + "/sensor/pump/" + reservoir).subscribe(
-            (data) => {
-                this.grower.reservoirs.setPumpStatus(reservoir, data.json["on"] == true);
-            }
-        )
+        );
     }
 
     /**
@@ -130,15 +122,15 @@ export class RestClient {
      * @param status what you want the light to be (on=true, off=false)
      */
     public setLightStatus(light: number, status: boolean) {
-        this.restClient.post(this.restTarget + "/control/light/" + light, { on: status }).subscribe(
+        this.restClient.post('http://' + this.restTarget + ':5000' + "/control/lights", { light: light, on: status }, this.options).subscribe(
             (data) => {
                 if (data.ok) {
-                    this.updateSingleLight(light);
+                    this.updateLights();
                 } else {
                     console.warn("Setting light status failed for light: " + light);
                 }
             }
-        )
+        );
     }
 
     /**
@@ -147,17 +139,34 @@ export class RestClient {
      * @param status what you want the pump to be (on=true, off=false)
      */
     public setPumpStatus(reservoir: string, status: boolean) {
-        this.restClient.post(this.restTarget + "/control/pump/" + reservoir, { on: status }).subscribe(
+        this.restClient.post('http://' + this.restTarget + ':5000' + "/control/pumps", { pump:reservoir, on: status }, this.options).subscribe(
             (data) => {
                 if (data.ok) {
-                    this.updateSinglePump(reservoir);
+                    this.updatePumps();
                 } else {
                     console.warn("Setting pump status failed for pump: " + reservoir);
                 }
             }
-        )
+        );
     }
 
-
+    /**
+     * Posts the model's entire schedule to the controller
+     */
+    public setSchedules() {
+        this.grower.schedules.getAllDays().forEach(
+            (day: Schedule) => {
+                this.restClient.post('http://' + this.restTarget + ':5000' + "/management/schedule", JSON.stringify(day), this.options).subscribe(
+                    (data) => {
+                        if(data.ok){
+                            //Setting this does not require a refetch since we are determining it from the model not from the controller
+                        }else{
+                            console.warn("Setting schedule failed for day: " + day.day);
+                        }
+                    }
+                );
+            }
+        );
+    }
 
 }
