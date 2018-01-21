@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { RestClient } from '../../provider/rest-client';
 import { Grower } from '../../model/grower/grower';
-import { Http } from '@angular/http/src/http';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'page-home',
@@ -10,14 +10,24 @@ import { Http } from '@angular/http/src/http';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public Http: Http) {
+    ip: string;
+    grower: Grower;
+    rest: RestClient;
 
-    let testIP = "127.0.0.1";
-    let grower: Grower = new Grower();
-    let rest: RestClient = new RestClient(grower, testIP, Http);
+    constructor(public navCtrl: NavController, public Http: Http) {
+        this.ip = "192.168.2.15";
+        this.grower = new Grower();
+        this.rest = new RestClient(this.grower, this.ip, Http);
 
-    rest.updateAll();
+        //rest.updateAll();
+    }
 
-  }
+    public turnOnLED(){
+        this.rest.turnOnLED()
+    }
+
+    public turnOffLED(){
+        this.rest.turnOffLED()
+    }
 
 }

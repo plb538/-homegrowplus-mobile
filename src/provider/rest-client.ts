@@ -1,26 +1,48 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Grower } from "../model/grower/grower";
-import { Http } from "@angular/http";
 
 /**
  * Handles all the REST communication to the controller (RaspPi) via available public methods
  */
+
+@Injectable()
 export class RestClient {
 
     //Storage
     private grower: Grower;
     private restClient: Http;
     private restTarget: string;
+    private headers = new Headers({'Content-Type': 'application/json'})
+	private options = new RequestOptions({ headers: this.headers});
+
 
     /**
-     * 
+     *
      * @param _grower Passed in grower object
      * @param http Angular http object
      * @param controllerIp Ip address of the controller (RaspPi)
      */
     constructor(private _grower: Grower, private controllerIp: string, private http: Http) {
         this.grower = _grower;
-        this.restClient = http;
         this.restTarget = controllerIp;
+        this.restClient = http;
+    }
+
+    /*
+    * Testing API call to RPi
+    */
+    public turnOnLED(){
+        console.log("LED on")
+        return this.restClient.get('http://' + this.restTarget + ':5000' + '/on', this.options).subscribe();
+    }
+
+    /*
+    * Testing API call to RPi
+    */
+    public turnOffLED(){
+        console.log("LED off")
+        return this.restClient.get('http://' + this.restTarget + ':5000' + '/off', this.options).subscribe();
     }
 
     /**
