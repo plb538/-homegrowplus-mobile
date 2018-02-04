@@ -5,49 +5,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
+  <p>Put stuff here!</p>>
+  <button ion-button (click)="turnOnLED()">
+      Turn On LED
+  </button>
 
-    <ion-item style="width:100%">
-      <button ion-button style="width:100%" (click)="toggleDetails1()">Tray 1</button>
-      <div *ngIf="showDetails1">
-        <ion-item *ngFor="let each of cards1">
-          <h3 style="padding-top:10px; padding-bottom:10px; font-size:16px">{{each.name}}</h3>
-          <p style="font-size:12px">{{each.value}}</p>
-        </ion-item>
-        <button ion-button style="width:50%; background-color:yellow; color:black">Lights</button>
-        <button ion-button style="width:50%; background-color:yellow; color:black">Water</button>
-      </div>
-    </ion-item>
+  <button ion-button (click)="turnOffLED()">
+      Turn Off LED
+  </button>
 
-    <ion-item style="width:100%">
-      <button ion-button style="width:100%" (click)="toggleDetails2()">Tray 2</button>
-      <div *ngIf="showDetails2">
-        <ion-item *ngFor="let each of cards2">
-          <h3 style="padding-top:10px; padding-bottom:10px; font-size:16px">{{each.name}}</h3>
-          <p style="font-size:12px">{{each.value}}</p>
-        </ion-item>
-        <button ion-button style="width:50%; background-color:yellow; color:black">Lights</button>
-        <button ion-button style="width:50%; background-color:yellow; color:black">Water</button>
-      </div>
-    </ion-item>
-
-    <ion-item style="width:100%">
-      <button ion-button style="width:100%" [disabled]=true>Tray 3 not equipped</button>
-    </ion-item>
-
-    <ion-item style="width:100%">
-      <button ion-button style="width:100%" [disabled]=true>Tray 4 not equipped</button>
-    </ion-item>
-
-    <ion-item style="width:100%">
-      <button ion-button style="width:100%" (click)="toggleDetailsWater()">Water and Nutrients</button>
-      <div *ngIf="showDetailsWater">
-        <ion-item *ngFor="let each of waterLevels">
-          <h3 style="padding-top:10px; padding-bottom:10px; font-size:16px">{{each.name}}</h3>
-          <p style="font-size:12px">{{each.value}}</p>
-        </ion-item>
-      </div>
-    </ion-item>
-
-  </ion-list>
 </ion-content>
