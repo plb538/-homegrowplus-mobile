@@ -50,10 +50,11 @@ export class ReservoirManager {
             console.error("Mismatched number of fluids");
             return undefined;
         }
-        let details: [{ name: string, level: number }];
+        let details: any = new Array();
         for (let i = 0; i < names.length; i++) {
             details.push({ name: names[i], level: levels[i] });
         }
+        return details;
     }
 
     /**
@@ -114,5 +115,17 @@ export class ReservoirManager {
                 }
             }
         )
+    }
+
+    /**
+     * Gets a tuple array of the name and level for each reservoir eg. [{name: string, level:number}]
+     */
+    public getAllPumpDetails() {
+        let names = this.getReservoirNames();
+        let details: any = new Array();
+        for (let i = 0; i < names.length; i++) {
+            details.push({ name: names[i], pumpStatus: this.getPumpStatus(names[i]) });
+        }
+        return details;
     }
 }

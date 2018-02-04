@@ -4,7 +4,8 @@ import { Light } from "../components/light";
  * Handles all the interactions with the lights
  */
 export class LightManager {
-    private lights: Array<Light>;
+    
+    private lights: Array<Light> = [];
 
     /**
      * Returns the number of lights currently in the model

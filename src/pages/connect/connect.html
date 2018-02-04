@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>HomeGrow+</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-label>
+        Connect to your HomeGrow+ Controller
+    </ion-label>
+    <ion-list>
+        <ion-item>
+            <ion-label>IP Address</ion-label>
+            <ion-input type="text" value="" [(ngModel)]="ipAddress"></ion-input>
+        </ion-item>
+        <ion-item>
+            <button full ion-button (click)="connect()">
+                Connect
+            </button>
+        </ion-item>
+    </ion-list>
+</ion-content>

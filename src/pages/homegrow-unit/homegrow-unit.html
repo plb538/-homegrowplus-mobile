@@ -1,0 +1,37 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>HomeGrow+</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-header>
+            HomeGrow+ Unit
+        </ion-card-header>
+        <ion-card-content>
+
+            Reservoirs
+            <span *ngFor="let each of getReservoirs()">
+                <ion-item-divider>
+                    Name: {{each.name}}
+                    <br> Level: {{each.level}}
+                    <br>
+                </ion-item-divider>
+            </span>
+
+            Pumps
+            <span *ngFor="let each of getPumps()">
+                <ion-item-divider>
+                    Name: {{each.name}}
+                    <br> Pump Status: {{each.pumpStatus}}
+                    <br>
+                </ion-item-divider>
+            </span>
+        </ion-card-content>
+        <button full ion-button (click)="showPlantManager()">
+            Manage Pumps
+        </button>
+    </ion-card>
+</ion-content>

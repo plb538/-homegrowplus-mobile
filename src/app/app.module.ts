@@ -5,6 +5,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { ConnectPage } from '../pages/connect/connect';
+import { HomeGrowUnitPage } from "../pages/homegrow-unit/homegrow-unit";
+import { TrayPlantPage } from "../pages/tray-plants/tray-plants";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,7 +18,10 @@ import { RestClient } from '../provider/rest-client';
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ConnectPage,
+    HomeGrowUnitPage,
+    TrayPlantPage,
   ],
   imports: [
     BrowserModule,
@@ -26,13 +32,16 @@ import { RestClient } from '../provider/rest-client';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    ConnectPage,
+    HomeGrowUnitPage,
+    TrayPlantPage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     RestClient,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
-export class AppModule {}
+export class AppModule { }

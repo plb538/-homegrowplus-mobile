@@ -6,14 +6,16 @@ import { Plant } from "./plant";
 export class Tray {
 
     //Array of plants
-    private sectors: Array<Plant>;
+    private sectors: Array<Plant> = [];
 
     /**
      * Creates a new tray with the specified number of sectors.
      * @param numSectors 
      */
     constructor(numSectors: number) {
-        this.sectors.fill(new Plant("Empty", Date.now()), numSectors);
+        for (let i = 0; i < numSectors; i++) {
+            this.sectors.push(new Plant("Empty", Date.now()));
+        }
     }
 
     /**

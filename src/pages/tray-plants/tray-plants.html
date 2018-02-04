@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>HomeGrow+</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-header>
+            Tray {{trayNumber}}
+        </ion-card-header>
+        <ion-card-content>
+            Sensors
+            <span *ngFor="let each of getSensorsForTray()">
+                <ion-item-divider>
+                    Name: {{each.name}}
+                    <br> Value: {{each.value}}
+                    <br>
+                </ion-item-divider>
+            </span>
+            <br>
+
+            Plants
+            <span *ngFor="let each of getPlantsForTray()">
+                <ion-item-divider>
+                    Name: {{each.getName()}}
+                    <br> Date Planted: {{each.getDatePlanted()}}
+                    <br>
+                </ion-item-divider>
+            </span>
+            <br>
+        </ion-card-content>
+        <button full ion-button (click)="showPlantManager()">
+            Manage Plants
+        </button>
+    </ion-card>
+
+</ion-content>

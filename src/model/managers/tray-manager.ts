@@ -5,13 +5,16 @@ import { Tray } from "../components/tray";
  */
 export class TrayManager {
 
-    private trays: Array<Tray>;
+    private trays: Array<Tray> = [];
 
     /**
      * Get a particular tray from the array
      * @param tray numerical index for the array
      */
     public getTray(tray: number): Tray {
+        if (tray > this.trays.length) {
+            return;
+        }
         return this.trays[tray];
     }
 
