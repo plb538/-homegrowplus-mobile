@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { RestClient } from '../../provider/rest-client';
 import { Grower } from '../../model/grower/grower';
 import { Http } from '@angular/http';
@@ -22,12 +22,8 @@ export class HomePage {
         //rest.updateAll();
     }
 
-    public turnOnLED(){
-        this.rest.turnOnLED()
-    }
-
-    public turnOffLED(){
-        this.rest.turnOffLED()
+    connect(){
+        this.navCtrl.setRoot('TraysPage');
     }
 
 }

@@ -4,7 +4,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { SettingsPage } from '../pages/settings/settings';
+import { TraysPage } from '../pages/trays/trays';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,7 +16,8 @@ import { RestClient } from '../provider/rest-client';
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    SettingsPage,
+    //TraysPage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { RestClient } from '../provider/rest-client';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    SettingsPage,
+    //TraysPage
   ],
   providers: [
     StatusBar,
