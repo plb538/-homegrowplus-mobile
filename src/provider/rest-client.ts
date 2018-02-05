@@ -29,22 +29,6 @@ export class RestClient {
         this.restClient = http;
     }
 
-    /*
-    * Testing API call to RPi
-    */
-    public turnOnLED() {
-        console.log("LED on")
-        return this.restClient.get('http://' + this.restTarget + ':5000' + '/on', this.options).subscribe();
-    }
-
-    /*
-    * Testing API call to RPi
-    */
-    public turnOffLED() {
-        console.log("LED off")
-        return this.restClient.get('http://' + this.restTarget + ':5000' + '/off', this.options).subscribe();
-    }
-
     /**
      * Invokes updateFluids, updateLights, and updatePumps
      */
@@ -59,11 +43,11 @@ export class RestClient {
      * Fetch the list of reservoirs and then iterate over them to fetch and update the level in each
      */
     public updateFluids() {
-        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/fluids", this.options).subscribe(
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensors/fluids", this.options).subscribe(
             (data) => {
-                data.json()["fluids"].forEach(
+                data.json().forEach(
                     (fluid: JSON) => {
-                        this.grower.reservoirs.updateFluidLevel(fluid["name"], fluid["level"]);
+                        this.grower.reservoirs.updateFluidLevel(fluid[0], fluid[1]);
                     }
                 )
             }
@@ -74,7 +58,7 @@ export class RestClient {
      * Fetch the number of lights and then iterate over them to fetch and update each light's status (on = true|false)
      */
     public updateLights() {
-        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/lights").subscribe(
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensors/lights").subscribe(
             (data) => {
                 data.json()["lights"].forEach(
                     (light: JSON) => {
@@ -89,11 +73,11 @@ export class RestClient {
      * Fetch the list of reservoirs and then iterate over them to fetch and update the status of the pump for each (on = true|false)
      */
     public updatePumps() {
-        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensor/pumps").subscribe(
+        this.restClient.get('http://' + this.restTarget + ':5000' + "/sensors/pumps").subscribe(
             (data) => {
-                data.json()["pumps"].forEach(
+                data.json().forEach(
                     (pump: JSON) => {
-                        this.grower.reservoirs.setPumpStatus(pump["name"], pump["status"]);
+                        this.grower.reservoirs.setPumpStatus(pump[0], pump[1]);
                     }
                 );
             }

@@ -22,6 +22,7 @@ export class HomePage {
         this.grower = new Grower();
         this.grower.trays.addTray(6);
         this.grower.trays.addTray(2);
+        this.rest = new RestClient(this.grower, "192.168.2.13", Http);
         this.showConnectDialog();
     }
 
@@ -52,5 +53,10 @@ export class HomePage {
             let unitModal = this.modalCtrl.create(HomeGrowUnitPage, [reservoirs]);
             unitModal.present();
         }
+    }
+
+    public setPumpStatus(name:string, status:boolean){
+        console.log("Turning " + name + " " + status);
+        this.rest.setPumpStatus(name, status);
     }
 }

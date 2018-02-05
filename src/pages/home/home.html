@@ -24,4 +24,11 @@
     </ion-item>
   </ion-list>
 
+  <button ion-button (click)="setPumpStatus('cleanwater', true)">
+    Turn pump on
+  </button>
+  <button ion-button (click)="setPumpStatus('cleanwater', false)">
+    Turn pump off
+  </button>
+
 </ion-content>
