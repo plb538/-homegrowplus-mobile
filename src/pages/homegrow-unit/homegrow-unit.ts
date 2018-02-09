@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ViewController, NavController, NavParams } from 'ionic-angular';
 import { ReservoirManager } from '../../model/managers/reservoir-manager';
+import { ModalController } from 'ionic-angular/components/modal/modal-controller';
+import { PumpControlPage } from '../pump-control/pump-control';
+import { RestClient } from '../../provider/rest-client';
 
 @Component({
     selector: 'page-homegrow-unit',
@@ -9,9 +12,11 @@ import { ReservoirManager } from '../../model/managers/reservoir-manager';
 export class HomeGrowUnitPage {
 
     public reservoirs: ReservoirManager;
+    public rest: RestClient;
 
-    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams) {
+    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl:ModalController) {
         this.reservoirs = navParams.data[0];
+        this.rest = navParams.data[1];
     }
 
     public getReservoirs() {
@@ -23,7 +28,7 @@ export class HomeGrowUnitPage {
     }
 
     public showPumpManager(){
-        
+        this.modalCtrl.create(PumpControlPage, [this.reservoirs, this.rest]).present();
     }
 
 }

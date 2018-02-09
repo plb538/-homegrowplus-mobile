@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>HomeGrow+</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-card>
+        <ion-card-header>
+            Plant Control for Tray {{trayNumber}}
+        </ion-card-header>
+        <ion-card-content>
+            <span *ngFor="let each of getPlantsForTray()">
+                <ion-item-divider>
+                    Name: {{each.getName()}}
+                    <br> Date Planted: {{each.getDatePlanted()}}
+                    <br>
+                    <button ion-button *ngIf="!plantIsEmpty(each)" (click)="removePlant(each)">Remove Plant</button>
+                    <button ion-button *ngIf="plantIsEmpty(each)" (click)="addPlant(each)">Add Plant</button>
+                </ion-item-divider>
+            </span>
+        </ion-card-content>
+    </ion-card>
+</ion-content>
