@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavController, NavParams, AlertController } from 'ionic-angular';
 import { ReservoirManager } from '../../model/managers/reservoir-manager';
 import { RestClient } from '../../provider/rest-client';
 import { Tray } from '../../model/components/tray';
@@ -17,23 +17,48 @@ export class PlantControlPage {
     public tray: Tray;
     public rest: RestClient;
 
-    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController) {
+    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController, public alertCtrl: AlertController) {
         this.trayNumber = navParams.data[0];
         this.tray = navParams.data[1];
         this.rest = navParams.data[2];
     }
 
     public addPlant(plant) {
-        //Todo create dialog with name and date input and put it here instead of null
-        let plantNameDialog = this.modalCtrl.create(null);
-        plantNameDialog.onDidDismiss(
-            (data) => {
-                if (data) {
-                    this.tray.addPlant(new Plant(data[0], data[1]), this.tray.getAllPlants().indexOf(plant));
-                }
+        this.alertCtrl.create(
+            {
+                title: 'Add a plant',
+                message: 'Enter details below',
+                inputs: [
+                    {
+                        name: 'Name',
+                        placeholder: 'Plant Name'
+                    }, {
+                        name: 'Date',
+                        placeholder: 'Date (Leave blank if planting now)'
+                    }
+                ],
+                buttons: [
+                    {
+                        text: 'Cancel',
+                        handler: (data) => {
+                            //no-op
+                        }
+                    }, {
+                        text: 'OK',
+                        handler: (data) => {
+                            console.log(data);
+                            if (data) {
+                                if (data['Date'] == '') {
+                                    this.tray.addPlant(new Plant(data['Name'], Date.now()), this.tray.getAllPlants().indexOf(plant));
+                                } else {
+                                    this.tray.addPlant(new Plant(data['Name'], data['Date']), this.tray.getAllPlants().indexOf(plant));
+                                }
+                            }
+                        }
+                    }
+                ]
             }
-        )
-        plantNameDialog.present();
+        ).present();
     }
 
     public removePlant(plant) {

@@ -19,9 +19,7 @@
                     <br>
                 </ion-item-divider>
             </span>
-            <br>
-
-            Plants
+            <br> Plants
             <span *ngFor="let each of getPlantsForTray()">
                 <ion-item-divider>
                     Name: {{each.getName()}}
@@ -29,11 +27,14 @@
                     <br>
                 </ion-item-divider>
             </span>
-            <br>
+            <button full ion-button (click)="showPlantManager()">Manage Plants</button>
+            <br> Light
+            <ion-item-divider>
+                Light Status: NYI
+                <br>
+            </ion-item-divider>
+            <button full ion-button (click)="activateLight(each)">Activate</button>
         </ion-card-content>
-        <button full ion-button (click)="showPlantManager()">
-            Manage Plants
-        </button>
     </ion-card>
 
 </ion-content>

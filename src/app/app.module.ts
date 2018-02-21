@@ -9,7 +9,7 @@ import { HomeGrowUnitPage } from "../pages/homegrow-unit/homegrow-unit";
 import { TrayPlantPage } from "../pages/tray-plants/tray-plants";
 import { PlantControlPage } from '../pages/plant-control/plant-control';
 import { PumpControlPage } from '../pages/pump-control/pump-control';
-
+import { ScheduleConfigPage } from '../pages/schedule-config/schedule-config';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
@@ -23,7 +23,8 @@ import { RestClient } from '../provider/rest-client';
     HomeGrowUnitPage,
     TrayPlantPage,
     PlantControlPage,
-    PumpControlPage
+    PumpControlPage,
+    ScheduleConfigPage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,8 @@ import { RestClient } from '../provider/rest-client';
     HomeGrowUnitPage,
     TrayPlantPage,
     PlantControlPage,
-    PumpControlPage
+    PumpControlPage,
+    ScheduleConfigPage
   ],
   providers: [
     StatusBar,

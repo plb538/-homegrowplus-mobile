@@ -7,6 +7,7 @@ import { ConnectPage } from '../connect/connect';
 import { Plant } from '../../model/components/plant';
 import { TrayPlantPage } from '../tray-plants/tray-plants';
 import { HomeGrowUnitPage } from '../homegrow-unit/homegrow-unit';
+import { ScheduleConfigPage } from '../schedule-config/schedule-config';
 
 @Component({
     selector: 'page-home',
@@ -22,21 +23,7 @@ export class HomePage {
         this.grower = new Grower();
         this.grower.trays.addTray(6);
         this.grower.trays.addTray(2);
-        this.showConnectDialog();
-    }
-
-    public showConnectDialog() {
-        let connectDialog = this.modalCtrl.create(ConnectPage);
-        connectDialog.onDidDismiss(
-            (data) => {
-                if (data) {
-                    this.ipAddress = data;
-                    this.rest = new RestClient(this.grower, this.ipAddress, this.Http);
-                    this.rest.updateAll();
-                }
-            }
-        );
-        connectDialog.present();
+        this.showIPModal();
     }
 
     public showTrayModal(tray: number) {
@@ -55,8 +42,27 @@ export class HomePage {
         }
     }
 
-    public setPumpStatus(name:string, status:boolean){
-        console.log("Turning " + name + " " + status);
-        this.rest.setPumpStatus(name, status);
+    public showScheduleModal() {
+        let schedules = this.grower.schedules;
+        if (schedules) {
+            let scheduleModal = this.modalCtrl.create(ScheduleConfigPage, [schedules, this.rest]);
+            scheduleModal.present();
+        }
+    }
+
+    public showIPModal() {
+        let connectDialog = this.modalCtrl.create(ConnectPage);
+        connectDialog.onDidDismiss(
+            (data) => {
+                if (data) {
+                    this.ipAddress = data;
+                    this.rest = new RestClient(this.grower, this.ipAddress, this.Http);
+                    this.rest.updateAll();
+                } else if (this.rest == null) {
+                    this.rest = new RestClient(this.grower, "127.0.0.1", this.Http);
+                }
+            }
+        );
+        connectDialog.present();
     }
 }

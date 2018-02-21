@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>HomeGrow+</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <span *ngFor="let each of getDays()">
+        <ion-card>
+            <ion-card-header>
+                {{each.day}}
+            </ion-card-header>
+            <ion-card-content>
+                <ion-item-divider>
+                    Time water is on: {{each.waterOnTime}}
+                    <br> Time between watering cycles: {{each.waterCyclePeriod}}
+                    <br> Time light is on: {{each.lightOnTime}}
+                    <br> Time between lighting cycles: {{each.lightCyclePeriod}}
+                    <button ion-button (click)="editDay(each)">Edit</button>
+                </ion-item-divider>
+            </ion-card-content>
+        </ion-card>
+    </span>
+
+
+</ion-content>

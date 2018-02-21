@@ -13,7 +13,7 @@ export class TrayPlantPage {
 
     public trayNumber: number;
     public tray: Tray;
-    public rest:RestClient;
+    public rest: RestClient;
 
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController) {
         this.trayNumber = navParams.data[0] + 1;
@@ -31,5 +31,9 @@ export class TrayPlantPage {
 
     public showPlantManager() {
         this.modalCtrl.create(PlantControlPage, [this.trayNumber, this.tray, this.rest]).present();
+    }
+
+    public activateLight() {
+        console.log("Activate Light NYI");
     }
 }

@@ -8,27 +8,29 @@
 
   <ion-list>
     <ion-item>
-      <button full ion-button (click)="showUnitModal()">
-        HomeGrow+ Unit
-      </button>
+      <button full ion-button (click)="showUnitModal()">HomeGrow+ Unit</button>
     </ion-item>
     <ion-item>
-      <button full ion-button (click)="showTrayModal(0)">
-        Tray 1
-      </button>
+      <button full ion-button (click)="showTrayModal(0)">Tray 1</button>
     </ion-item>
     <ion-item>
-      <button full ion-button (click)="showTrayModal(1)">
-        Tray 2
-      </button>
+      <button full ion-button (click)="showTrayModal(1)">Tray 2</button>
+    </ion-item>
+    <ion-item>
+      <button full ion-button (click)="showScheduleModal()">Schedule</button>
+    </ion-item>
+    <ion-item>
+      <button full ion-button (click)="showIPModal()">Set Controller IP</button>
     </ion-item>
   </ion-list>
 
+  <!--
   <button ion-button (click)="setPumpStatus('cleanwater', true)">
     Turn pump on
   </button>
   <button ion-button (click)="setPumpStatus('cleanwater', false)">
     Turn pump off
   </button>
+-->
 
 </ion-content>
