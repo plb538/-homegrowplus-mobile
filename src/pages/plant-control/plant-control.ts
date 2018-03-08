@@ -5,6 +5,7 @@ import { RestClient } from '../../provider/rest-client';
 import { Tray } from '../../model/components/tray';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { Plant } from '../../model/components/plant';
+import { TimeFormatter } from '../../provider/time-formatter';
 
 @Component({
     selector: 'page-plant-control',
@@ -71,5 +72,9 @@ export class PlantControlPage {
 
     public plantIsEmpty(plant): boolean {
         return plant.name == "Empty";
+    }
+
+    public getPrettyString(input){
+        return TimeFormatter.getPrettyString(input);
     }
 }

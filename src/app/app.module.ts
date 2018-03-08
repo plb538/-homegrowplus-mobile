@@ -14,6 +14,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpModule } from '@angular/http';
 import { RestClient } from '../provider/rest-client';
+import { TimeFormatter } from '../provider/time-formatter';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { RestClient } from '../provider/rest-client';
     StatusBar,
     SplashScreen,
     RestClient,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    TimeFormatter
   ]
 })
 export class AppModule { }

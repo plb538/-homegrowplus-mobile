@@ -14,7 +14,7 @@
             <span *ngFor="let each of getPlantsForTray()">
                 <ion-item-divider>
                     Name: {{each.getName()}}
-                    <br> Date Planted: {{each.getDatePlanted()}}
+                    <br> Date Planted: {{getPrettyString(each.getDatePlanted())}}
                     <br>
                     <button ion-button *ngIf="!plantIsEmpty(each)" (click)="removePlant(each)">Remove Plant</button>
                     <button ion-button *ngIf="plantIsEmpty(each)" (click)="addPlant(each)">Add Plant</button>

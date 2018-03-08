@@ -4,6 +4,7 @@ import { Tray } from '../../model/components/tray';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { PlantControlPage } from '../plant-control/plant-control';
 import { RestClient } from '../../provider/rest-client';
+import { TimeFormatter } from '../../provider/time-formatter';
 
 @Component({
     selector: 'page-tray-plants',
@@ -35,5 +36,9 @@ export class TrayPlantPage {
 
     public activateLight() {
         console.log("Activate Light NYI");
+    }
+
+    public getPrettyString(input){
+        return TimeFormatter.getPrettyString(input);
     }
 }
