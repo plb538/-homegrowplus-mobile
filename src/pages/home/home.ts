@@ -22,14 +22,14 @@ export class HomePage {
     constructor(public navCtrl: NavController, public Http: Http, public modalCtrl: ModalController) {
         this.grower = new Grower();
         this.grower.trays.addTray(6);
-        this.grower.trays.addTray(2);
+        this.grower.lights.addLight();
         this.showIPModal();
     }
 
     public showTrayModal(tray: number) {
         let currentTray = this.grower.trays.getTray(tray);
         if (currentTray) {
-            let trayModal = this.modalCtrl.create(TrayPlantPage, [tray, currentTray, this.rest]);
+            let trayModal = this.modalCtrl.create(TrayPlantPage, [tray, this.grower, this.rest]);
             trayModal.present();
         }
     }

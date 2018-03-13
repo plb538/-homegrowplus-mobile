@@ -10,9 +10,7 @@ export class ReservoirManager {
     private fluids: Array<Reservoir> = [
         new Reservoir("cleanwater", -1),
         new Reservoir("drainwater", -1),
-        new Reservoir("nitrogen", -1),
-        new Reservoir("phosphorus", -1),
-        new Reservoir("potassium", -1),
+        new Reservoir("nutrients", -1),
         new Reservoir("acid", -1),
         new Reservoir("base", -1),
         new Reservoir("mixer", -1)

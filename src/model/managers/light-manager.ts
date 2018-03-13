@@ -27,14 +27,14 @@ export class LightManager {
      * Check if the specified light is on in the model
      * @param light light to be chcked
      */
-    private isLightOn(light: number) {
+    public isLightOn(light: number) {
         return this.lights[light].isLightOn();
     }
 
     /**
      * Adds a new light to the model which is by default turned off
      */
-    private addLight() {
+    public addLight() {
         this.lights.push(new Light(false))
     }
 

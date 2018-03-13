@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ViewController, NavController, NavParams } from 'ionic-angular';
-import { Tray } from '../../model/components/tray';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { PlantControlPage } from '../plant-control/plant-control';
 import { RestClient } from '../../provider/rest-client';
 import { TimeFormatter } from '../../provider/time-formatter';
+import { Grower } from '../../model/grower/grower';
 
 @Component({
     selector: 'page-tray-plants',
@@ -13,12 +13,12 @@ import { TimeFormatter } from '../../provider/time-formatter';
 export class TrayPlantPage {
 
     public trayNumber: number;
-    public tray: Tray;
+    public grower: Grower;
     public rest: RestClient;
 
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController) {
         this.trayNumber = navParams.data[0] + 1;
-        this.tray = navParams.data[1];
+        this.grower = navParams.data[1];
         this.rest = navParams.data[2];
     }
 
@@ -27,18 +27,22 @@ export class TrayPlantPage {
     }
 
     public getPlantsForTray() {
-        return this.tray.getAllPlants();
+        return this.grower.trays.getTray(this.trayNumber - 1).getAllPlants();
     }
 
     public showPlantManager() {
-        this.modalCtrl.create(PlantControlPage, [this.trayNumber, this.tray, this.rest]).present();
+        this.modalCtrl.create(PlantControlPage, [this.trayNumber - 1, this.grower.trays.getTray(this.trayNumber), this.rest]).present();
     }
 
     public activateLight() {
-        console.log("Activate Light NYI");
+        this.rest.setLightStatus(this.trayNumber - 1, !this.getLightStatus());
     }
 
     public getPrettyString(input){
         return TimeFormatter.getPrettyString(input);
+    }
+
+    public getLightStatus(){
+        return this.grower.lights.isLightOn(this.trayNumber - 1);
     }
 }
