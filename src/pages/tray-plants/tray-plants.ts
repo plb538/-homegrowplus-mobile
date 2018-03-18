@@ -31,7 +31,7 @@ export class TrayPlantPage {
     }
 
     public showPlantManager() {
-        this.modalCtrl.create(PlantControlPage, [this.trayNumber - 1, this.grower.trays.getTray(this.trayNumber), this.rest]).present();
+        this.modalCtrl.create(PlantControlPage, [this.trayNumber, this.grower.trays.getTray(this.trayNumber - 1), this.rest]).present();
     }
 
     public activateLight() {

@@ -21,7 +21,7 @@ export class HomePage {
 
     constructor(public navCtrl: NavController, public Http: Http, public modalCtrl: ModalController) {
         this.grower = new Grower();
-        this.grower.trays.addTray(6);
+        this.grower.trays.addTray(3);
         this.grower.lights.addLight();
         this.showIPModal();
     }

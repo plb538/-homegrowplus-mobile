@@ -8,8 +8,8 @@ export class ReservoirManager {
     //Create a reservoir for each
     //Each reservoir has a pump at the bottom
     private fluids: Array<Reservoir> = [
-        new Reservoir("cleanwater", -1),
-        new Reservoir("drainwater", -1),
+        new Reservoir("clean_water", -1),
+        new Reservoir("drain_water", -1),
         new Reservoir("nutrients", -1),
         new Reservoir("acid", -1),
         new Reservoir("base", -1),
