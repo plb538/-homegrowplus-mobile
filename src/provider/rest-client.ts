@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Grower } from "../model/grower/grower";
 import { Schedule } from '../model/components/schedule';
+import { ToastController } from 'ionic-angular';
 
 /**
  * Handles all the REST communication to the controller (RaspPi) via available public methods
@@ -23,7 +24,7 @@ export class RestClient {
      * @param http Angular http object
      * @param controllerIp Ip address of the controller (RaspPi)
      */
-    constructor(private _grower: Grower, private controllerIp: string, private http: Http) {
+    constructor(private _grower: Grower, private controllerIp: string, private http: Http, public toastCtrl: ToastController) {
         this.grower = _grower;
         this.restTarget = controllerIp;
         this.restClient = http;
@@ -60,7 +61,7 @@ export class RestClient {
     public updateLights() {
         this.restClient.get('http://' + this.restTarget + ':5000' + "/control/lights").subscribe(
             (data) => {
-                data.json()["lights"].forEach(
+                data.json().forEach(
                     (light: JSON) => {
                         this.grower.lights.updateLightStatus(light[0], light[1]);
                     }
@@ -84,9 +85,9 @@ export class RestClient {
         );
     }
 
-        /**
-     * Gets a particular days schedule from the controller and sets it in the model
-     */
+    /**
+ * Gets a particular days schedule from the controller and sets it in the model
+ */
     public updateSchedules() {
         this.restClient.get('http://' + this.restTarget + ':5000' + "/management/schedule").subscribe(
             (data) => {
@@ -111,6 +112,13 @@ export class RestClient {
                 if (data.ok) {
                     this.updateLights();
                 } else {
+                    if (data.status == 503) {
+                        this.toastCtrl.create({
+                            message: "Could not activate light #" + light,
+                            position: "top",
+                            duration: 3000
+                        }).present();
+                    }
                     console.warn("Setting light status failed for light: " + light);
                 }
             }
@@ -123,11 +131,18 @@ export class RestClient {
      * @param status what you want the pump to be (on=true, off=false)
      */
     public setPumpStatus(reservoir: string, status: boolean) {
-        this.restClient.post('http://' + this.restTarget + ':5000' + "/control/pumps", { pump:reservoir, on: status }, this.options).subscribe(
+        this.restClient.post('http://' + this.restTarget + ':5000' + "/control/pumps", { pump: reservoir, on: status }, this.options).subscribe(
             (data) => {
                 if (data.ok) {
                     this.updatePumps();
                 } else {
+                    if (data.status == 503) {
+                        this.toastCtrl.create({
+                            message: "Could not activate pump " + reservoir + ". Check reservoir levels.",
+                            position: "top",
+                            duration: 3000
+                        }).present();
+                    }
                     console.warn("Setting pump status failed for pump: " + reservoir);
                 }
             }
@@ -142,9 +157,9 @@ export class RestClient {
             (day: Schedule) => {
                 this.restClient.post('http://' + this.restTarget + ':5000' + "/management/schedule", JSON.stringify(day), this.options).subscribe(
                     (data) => {
-                        if(data.ok){
+                        if (data.ok) {
                             //Setting this does not require a refetch since we are determining it from the model not from the controller
-                        }else{
+                        } else {
                             console.warn("Setting schedule failed for day: " + day.day);
                         }
                     }

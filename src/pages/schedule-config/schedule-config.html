@@ -13,11 +13,11 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-item-divider>
-                    Time water is on: {{each.waterOnTime}}
-                    <br> Time between watering cycles: {{each.waterCyclePeriod}}
-                    <br> Time light is on: {{each.lightOnTime}}
-                    <br> Time between lighting cycles: {{each.lightCyclePeriod}}
-                    <button ion-button (click)="editDay(each)">Edit</button>
+                    Time water is on: {{each.waterOnTime}} minutes
+                    <br> Time between watering cycles: {{each.waterCyclePeriod}} minutes
+                    <br> Time light is on: {{each.lightOnTime}} minutes
+                    <br> Time between lighting cycles: {{each.lightCyclePeriod}} minutes
+                    <br> <button ion-button (click)="editDay(each)">Edit</button>
                 </ion-item-divider>
             </ion-card-content>
         </ion-card>

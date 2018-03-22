@@ -14,7 +14,7 @@ export class HomeGrowUnitPage {
     public reservoirs: ReservoirManager;
     public rest: RestClient;
 
-    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl:ModalController) {
+    constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController) {
         this.reservoirs = navParams.data[0];
         this.rest = navParams.data[1];
     }
@@ -27,8 +27,23 @@ export class HomeGrowUnitPage {
         return this.reservoirs.getAllPumpDetails();
     }
 
-    public showPumpManager(){
+    public showPumpManager() {
         this.modalCtrl.create(PumpControlPage, [this.reservoirs, this.rest]).present();
     }
 
+    public parseLevel(input: number, reservoir: string): string {
+        if (reservoir == "drain_water" || reservoir == "mixer_full") {
+            if (input > 0) {
+                return "Too High";
+            } else {
+                return "OK";
+            }
+        } else {
+            if (input > 0) {
+                return "OK";
+            } else {
+                return "Too Low";
+            }
+        }
+    }
 }

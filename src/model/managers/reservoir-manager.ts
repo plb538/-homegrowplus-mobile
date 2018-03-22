@@ -89,14 +89,16 @@ export class ReservoirManager {
      * Get the pump status for a particular reservoir
      * @param fluid The fluid we are getting
      */
-    public getPumpStatus(fluid: string) {
+    public getPumpStatus(fluid: string): boolean {
+        let result: boolean = false;
         this.fluids.filter(
             (reservoir: Reservoir) => {
                 if (reservoir.getFluidName() == fluid) {
-                    return reservoir.isPumpOn();
+                    return result = reservoir.isPumpOn();
                 }
             }
-        )
+        );
+        return result;
     }
 
     /**

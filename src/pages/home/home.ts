@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, ToastController } from 'ionic-angular';
 import { RestClient } from '../../provider/rest-client';
 import { Grower } from '../../model/grower/grower';
 import { Http } from '@angular/http';
@@ -18,8 +18,9 @@ export class HomePage {
     ipAddress: string;
     grower: Grower;
     rest: RestClient;
+    poller;
 
-    constructor(public navCtrl: NavController, public Http: Http, public modalCtrl: ModalController) {
+    constructor(public navCtrl: NavController, public Http: Http, public modalCtrl: ModalController, public toastCtrl: ToastController) {
         this.grower = new Grower();
         this.grower.trays.addTray(3);
         this.grower.lights.addLight();
@@ -56,10 +57,17 @@ export class HomePage {
             (data) => {
                 if (data) {
                     this.ipAddress = data;
-                    this.rest = new RestClient(this.grower, this.ipAddress, this.Http);
-                    this.rest.updateAll();
+                    this.rest = new RestClient(this.grower, this.ipAddress, this.Http, this.toastCtrl);
+                    this.poller = setInterval(() => {
+                        this.rest.updateAll();
+                    }, 3000);
                 } else if (this.rest == null) {
-                    this.rest = new RestClient(this.grower, "127.0.0.1", this.Http);
+                    this.rest = new RestClient(this.grower, "127.0.0.1", this.Http, this.toastCtrl);
+                    this.toastCtrl.create({
+                        message: "Invalid controller IP",
+                        position: "top",
+                        duration: 3000
+                    }).present();
                 }
             }
         );

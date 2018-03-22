@@ -6,16 +6,10 @@ import { Schedule } from "../components/schedule";
 export class ScheduleManager {
 
     /**
-     * Creates the schedules with -1 for all values for each day of the week
+     * Creates the schedules with -1 for all values
      */
     private schedule: Array<Schedule> = [
-        new Schedule("sunday", -1, -1, -1, -1),
-        new Schedule("monday", -1, -1, -1, -1),
-        new Schedule("tuesday", -1, -1, -1, -1),
-        new Schedule("wednesday", -1, -1, -1, -1),
-        new Schedule("thursday", -1, -1, -1, -1),
-        new Schedule("friday", -1, -1, -1, -1),
-        new Schedule("saturday", -1, -1, -1, -1)
+        new Schedule("Daily", -1, -1, -1, -1)
     ];
 
     /**

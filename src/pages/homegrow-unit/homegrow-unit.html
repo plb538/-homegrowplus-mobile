@@ -16,7 +16,7 @@
             <span *ngFor="let each of getReservoirs()">
                 <ion-item-divider>
                     Name: {{each.name}}
-                    <br> Level: {{each.level}}
+                    <br> Level: {{parseLevel(each.level)}}
                     <br>
                 </ion-item-divider>
             </span>
