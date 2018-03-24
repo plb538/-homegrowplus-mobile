@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ViewController, NavController, NavParams, AlertController } from 'ionic-angular';
-import { ReservoirManager } from '../../model/managers/reservoir-manager';
 import { RestClient } from '../../provider/rest-client';
 import { Tray } from '../../model/components/tray';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ViewController, NavController, NavParams, AlertController } from 'ionic-angular';
-import { ReservoirManager } from '../../model/managers/reservoir-manager';
 import { RestClient } from '../../provider/rest-client';
-import { Reservoir } from '../../model/components/reservoir';
 import { ScheduleManager } from '../../model/managers/schedule-manager';
 import { Schedule } from '../../model/components/schedule';
 
