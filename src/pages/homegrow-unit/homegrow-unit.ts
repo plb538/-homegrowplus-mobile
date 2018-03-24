@@ -55,7 +55,7 @@ export class HomeGrowUnitPage {
                 return "OK";
             }
         } else {
-            if (sensor.level > 0) {
+            if (sensor.level >= 1) {
                 return "OK";
             } else {
                 return "Too Low";
