@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Grower } from "../model/grower/grower";
 import { Schedule } from '../model/components/schedule';
 import { ToastController } from 'ionic-angular';
+import { Tray } from '../model/components/tray';
 
 /**
  * Handles all the REST communication to the controller (RaspPi) via available public methods
@@ -48,7 +49,7 @@ export class RestClient {
             (data) => {
                 data.json().forEach(
                     (fluid: JSON) => {
-                        this.grower.reservoirs.updateFluidLevel(fluid[0], fluid[1]);
+                        this.grower.sensors.getSensor(fluid[0]).setValue(fluid[1]);
                     }
                 )
             }
@@ -78,7 +79,8 @@ export class RestClient {
             (data) => {
                 data.json().forEach(
                     (pump: JSON) => {
-                        this.grower.reservoirs.setPumpStatus(pump[0], pump[1]);
+                        console.log(pump);
+                        this.grower.pumps.getPump(pump[0]).setPumpStatus(pump[1]);
                     }
                 );
             }
@@ -164,6 +166,37 @@ export class RestClient {
                         }
                     }
                 );
+            }
+        );
+    }
+
+    public getPlants() {
+        this.restClient.get('http://' + this.restTarget + ':5000' + '/info/plants', this.options).subscribe(
+            (data) => {
+                data.json().forEach(
+                    (plants: JSON) => {
+                        let tray = this.grower.trays.getTray(0);
+                        tray.removePlant(0);
+                        tray.removePlant(1);
+                        tray.removePlant(2);
+                        tray.addPlant(plants[0][0], plants[0][1]);
+                        tray.addPlant(plants[1][0], plants[1][1]);
+                        tray.addPlant(plants[2][0], plants[2][1]);
+                    }
+                );
+            }
+        );
+    }
+
+    public setPlants() {
+        console.log(JSON.stringify(this.grower.trays.getTray(0).getAllPlants()));
+        this.restClient.post('http://' + this.restTarget + ':5000' + '/add/plants', JSON.stringify(this.grower.trays.getTray(0).getAllPlants()), this.options).subscribe(
+            (data) => {
+                if (data.ok) {
+                    //nothing
+                } else {
+                    console.warn("Set failed on plants")
+                }
             }
         );
     }

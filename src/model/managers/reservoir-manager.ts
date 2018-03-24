@@ -114,7 +114,7 @@ export class ReservoirManager {
                     return;
                 }
             }
-        )
+        );
     }
 
     /**

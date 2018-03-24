@@ -33,9 +33,6 @@ export class PlantControlPage {
                     {
                         name: 'Name',
                         placeholder: 'Plant Name'
-                    }, {
-                        name: 'Date',
-                        placeholder: 'Date (Leave blank if planting now)'
                     }
                 ],
                 buttons: [
@@ -49,11 +46,8 @@ export class PlantControlPage {
                         handler: (data) => {
                             console.log(data);
                             if (data) {
-                                if (data['Date'] == '') {
-                                    this.tray.addPlant(new Plant(data['Name'], Date.now()), this.tray.getAllPlants().indexOf(plant));
-                                } else {
-                                    this.tray.addPlant(new Plant(data['Name'], data['Date']), this.tray.getAllPlants().indexOf(plant));
-                                }
+                                this.tray.addPlant(new Plant(data['Name'], Date.now()), this.tray.getAllPlants().indexOf(plant));
+                                this.rest.setPlants();
                             }
                         }
                     }
@@ -74,7 +68,7 @@ export class PlantControlPage {
         return plant.name == "Empty";
     }
 
-    public getPrettyString(input){
+    public getPrettyString(input) {
         return TimeFormatter.getPrettyString(input);
     }
 }

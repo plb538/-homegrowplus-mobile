@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { ViewController, NavController, NavParams } from 'ionic-angular';
-import { ReservoirManager } from '../../model/managers/reservoir-manager';
 import { ModalController } from 'ionic-angular/components/modal/modal-controller';
 import { PumpControlPage } from '../pump-control/pump-control';
 import { RestClient } from '../../provider/rest-client';
+import { Grower } from '../../model/grower/grower';
+import { Pump } from '../../model/components/pump';
+import { Sensor } from '../../model/components/sensor';
 
 @Component({
     selector: 'page-homegrow-unit',
@@ -11,35 +13,49 @@ import { RestClient } from '../../provider/rest-client';
 })
 export class HomeGrowUnitPage {
 
-    public reservoirs: ReservoirManager;
+    public grower: Grower;
     public rest: RestClient;
 
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams, public modalCtrl: ModalController) {
-        this.reservoirs = navParams.data[0];
+        this.grower = navParams.data[0];
         this.rest = navParams.data[1];
     }
 
     public getReservoirs() {
-        return this.reservoirs.getAllFluidDetails();
+        //return this.reservoirs.getAllFluidDetails();
+        let temp = [];
+        this.grower.sensors.getAllSensorsOfType("conductivity").forEach(
+            (sensor: Sensor) => {
+                temp.push({ name: sensor.getName(), level: sensor.getValue() });
+            }
+        );
+        return temp;
     }
 
     public getPumps() {
-        return this.reservoirs.getAllPumpDetails();
+        let temp = [];
+        this.grower.pumps.getAllPumps().forEach(
+            (pump: Pump) => {
+                temp.push({ name: pump.getPumpName(), pumpStatus: pump.getPumpStatus() });
+            }
+        );
+        return temp;
     }
 
     public showPumpManager() {
-        this.modalCtrl.create(PumpControlPage, [this.reservoirs, this.rest]).present();
+        //this.modalCtrl.create(PumpControlPage, [this.reservoirs, this.rest]).present();
+        this.modalCtrl.create(PumpControlPage, [this.grower.pumps, this.rest]).present();
     }
 
-    public parseLevel(input: number, reservoir: string): string {
-        if (reservoir == "drain_water" || reservoir == "mixer_full") {
-            if (input > 0) {
+    public parseLevel(sensor): string {
+        if (sensor.name == "drain_water" || sensor.name == "mixer_full") {
+            if (sensor.level >= 1) {
                 return "Too High";
             } else {
                 return "OK";
             }
         } else {
-            if (input > 0) {
+            if (sensor.level > 0) {
                 return "OK";
             } else {
                 return "Too Low";

@@ -36,11 +36,8 @@ export class HomePage {
     }
 
     public showUnitModal() {
-        let reservoirs = this.grower.reservoirs;
-        if (reservoirs) {
-            let unitModal = this.modalCtrl.create(HomeGrowUnitPage, [reservoirs, this.rest]);
-            unitModal.present();
-        }
+        let unitModal = this.modalCtrl.create(HomeGrowUnitPage, [this.grower, this.rest]);
+        unitModal.present();
     }
 
     public showScheduleModal() {
