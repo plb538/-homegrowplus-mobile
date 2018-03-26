@@ -39,6 +39,20 @@ export class RestClient {
         this.updateLights();
         this.updatePumps();
         this.updateSchedules();
+        this.updateTempHumidity();
+    }
+
+    public updateTempHumidity() {
+        this.restClient.get('http://' + this.restTarget + ':5000' + '/sensors/temp', this.options).subscribe(
+            (data) => {
+                data.json().forEach(
+                    (sensor: JSON) => {
+                        this.grower.sensors.getSensor('temperature').setValue(sensor[1]);
+                        this.grower.sensors.getSensor('humidity').setValue(sensor[2]);
+                    }
+                );
+            }
+        );
     }
 
     /**
@@ -79,7 +93,6 @@ export class RestClient {
             (data) => {
                 data.json().forEach(
                     (pump: JSON) => {
-                        console.log(pump);
                         this.grower.pumps.getPump(pump[0]).setPumpStatus(pump[1]);
                     }
                 );
@@ -189,7 +202,6 @@ export class RestClient {
     }
 
     public setPlants() {
-        console.log(JSON.stringify(this.grower.trays.getTray(0).getAllPlants()));
         this.restClient.post('http://' + this.restTarget + ':5000' + '/add/plants', JSON.stringify(this.grower.trays.getTray(0).getAllPlants()), this.options).subscribe(
             (data) => {
                 if (data.ok) {

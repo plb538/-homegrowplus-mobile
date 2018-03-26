@@ -6,6 +6,7 @@ export class PumpManager {
         new Pump("mister", false),
         new Pump("clean_water", false),
         new Pump("drain_water", false),
+        new Pump("drain_out", false),
         new Pump("nutrients", false),
         new Pump("acid", false),
         new Pump("base", false)

@@ -23,7 +23,12 @@ export class TrayPlantPage {
     }
 
     public getSensorsForTray() {
-        return [{ name: "Todo", value: "Put sensor data here" }];
+        let temp = [];
+        let s1 = this.grower.sensors.getSensor("temperature");
+        let s2 = this.grower.sensors.getSensor("humidity");
+        temp.push({ name: s1.getName(), value: s1.getValue() + "C" });
+        temp.push({ name: s2.getName(), value: s2.getValue() + "%R.H." });
+        return temp;
     }
 
     public getPlantsForTray() {
@@ -38,11 +43,11 @@ export class TrayPlantPage {
         this.rest.setLightStatus(this.trayNumber - 1, !this.getLightStatus());
     }
 
-    public getPrettyString(input){
+    public getPrettyString(input) {
         return TimeFormatter.getPrettyString(input);
     }
 
-    public getLightStatus(){
+    public getLightStatus() {
         return this.grower.lights.isLightOn(this.trayNumber - 1);
     }
 }
