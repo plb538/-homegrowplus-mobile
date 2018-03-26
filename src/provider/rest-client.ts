@@ -4,6 +4,7 @@ import { Grower } from "../model/grower/grower";
 import { Schedule } from '../model/components/schedule';
 import { ToastController } from 'ionic-angular';
 import { Tray } from '../model/components/tray';
+import { Plant } from '../model/components/plant';
 
 /**
  * Handles all the REST communication to the controller (RaspPi) via available public methods
@@ -40,6 +41,7 @@ export class RestClient {
         this.updatePumps();
         this.updateSchedules();
         this.updateTempHumidity();
+        this.getPlants();
     }
 
     public updateTempHumidity() {
@@ -186,17 +188,18 @@ export class RestClient {
     public getPlants() {
         this.restClient.get('http://' + this.restTarget + ':5000' + '/info/plants', this.options).subscribe(
             (data) => {
-                data.json().forEach(
-                    (plants: JSON) => {
-                        let tray = this.grower.trays.getTray(0);
-                        tray.removePlant(0);
-                        tray.removePlant(1);
-                        tray.removePlant(2);
-                        tray.addPlant(plants[0][0], plants[0][1]);
-                        tray.addPlant(plants[1][0], plants[1][1]);
-                        tray.addPlant(plants[2][0], plants[2][1]);
-                    }
-                );
+                let plants = data.json();
+                console.log(plants);
+                let tray = this.grower.trays.getTray(0);
+                tray.removePlant(0);
+                tray.removePlant(1);
+                tray.removePlant(2);
+                let p1 = new Plant(plants[0][0], plants[0][1]);
+                let p2 = new Plant(plants[1][0], plants[1][1]);
+                let p3 = new Plant(plants[2][0], plants[2][1]);
+                tray.addPlant(p1, 0);
+                tray.addPlant(p2, 1);
+                tray.addPlant(p3, 2);
             }
         );
     }
